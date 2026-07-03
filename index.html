@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHITCHAT Login</title>
+
+<style>
+    *{ margin:0; padding:0; box-sizing:border-box; font-family:Arial,Helvetica,sans-serif; }
+    body{ display:flex; justify-content:center; align-items:center; min-height:100vh; background:linear-gradient(135deg,#0f172a,#1e3a8a,#38bdf8); }
+    .container{ width:360px; background:rgba(255,255,255,.12); backdrop-filter:blur(15px); padding:35px; border-radius:20px; box-shadow:0 10px 35px rgba(0,0,0,.4); color:#fff; }
+    h2{ text-align:center; margin-bottom:25px; font-size:28px; }
+    .input-box{ margin-bottom:18px; }
+    .input-box label{ display:block; margin-bottom:8px; font-size:14px; }
+    .input-box input, .input-box select{ width:100%; padding:14px; border:none; border-radius:10px; outline:none; font-size:15px; color: #333; }
+    button{ width:100%; padding:14px; border:none; border-radius:10px; background:#00c6ff; color:#fff; font-size:17px; cursor:pointer; transition:.3s; margin-top:10px; }
+    button:hover{ background:#0099ff; }
+    .hidden { display: none; }
+    .link { text-align: center; margin-top: 15px; font-size: 14px; cursor: pointer; text-decoration: underline; }
+    #error, #success { color:#8cff8c; text-align:center; margin-top:15px; font-weight:bold; }
+    
+    /* Header layout for back arrow placement */
+    .register-header { position: relative; width: 100%; }
+    .back-arrow { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 24px; cursor: pointer; transition: color .2s; }
+    .back-arrow:hover { color: #00c6ff; }
+</style>
+</head>
+
+<body>
+
+<div class="container" id="loginBox">
+    <h2>CHITCHAT LOGIN</h2>
+    <form id="loginForm">
+        <div class="input-box"><label>Phone Number</label><input type="tel" id="loginPhone" placeholder="Enter Phone Number" required></div>
+        <div class="input-box"><label>Password</label><input type="password" id="password" placeholder="Enter Password" required></div>
+        <button type="submit">LOGIN</button>
+        <p class="link" onclick="toggleView()">Don't have an account? Register</p>
+        <p id="error"></p>
+    </form>
+</div>
+
+<div class="container hidden" id="registerBox">
+    <div class="register-header">
+        <span class="back-arrow" onclick="toggleView()">&#8592;</span>
+        <h2>REGISTER</h2>
+    </div>
+    <form id="regForm">
+        <div class="input-box"><label>Full Name</label><input type="text" id="fullName" required></div>
+        <div class="input-box"><label>Email</label><input type="email" id="regEmail" required></div>
+        <div class="input-box">
+            <label>Gender</label>
+            <select id="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+        <div class="input-box"><label>Country</label><input type="text" id="country" required></div>
+        <div class="input-box"><label>Phone Number</label><input type="tel" id="phone" required></div>
+        <div class="input-box"><label>Password</label><input type="password" id="regPassword" placeholder="Create a password" required></div>
+        <button type="submit">SUBMIT</button>
+        <p class="link" onclick="toggleView()">Back to Login</p>
+    </form>
+</div>
+
+<div class="container hidden" id="successBox">
+    <div id="success"></div>
+    <p class="link" onclick="showLoginFromSuccess()" style="color: #fff;">Back to Login</p>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Your live chitchat-992d6 configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBzK4tt4gI-B8GAJVXqKpgQD6PTdtuxkbo",
+        authDomain: "chitchat-992d6.firebaseapp.com",
+        databaseURL: "https://chitchat-992d6-default-rtdb.firebaseio.com",
+        projectId: "chitchat-992d6",
+        storageBucket: "chitchat-992d6.firebasestorage.app",
+        messagingSenderId: "132736236077",
+        appId: "1:132736236077:web:d021488cc88724970ed6a4",
+        measurementId: "G-FTTH2WE910"
+    };
+
+    // Initialize Firebase and Firestore Database
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Toggle between basic Login and Registration panels
+    window.toggleView = function() {
+        document.getElementById('loginBox').classList.toggle('hidden');
+        document.getElementById('registerBox').classList.toggle('hidden');
+    };
+
+    // New Function: Safely routes back to login view from the success container without page crash
+    window.showLoginFromSuccess = function() {
+        document.getElementById('successBox').classList.add('hidden');
+        document.getElementById('loginBox').classList.remove('hidden');
+    };
+
+    // --- REGISTRATION LOGIC ---
+    document.getElementById("regForm").addEventListener("submit", async function(e){
+        e.preventDefault();
+        
+        const name = document.getElementById("fullName").value;
+        const email = document.getElementById("regEmail").value;
+        const gender = document.getElementById("gender").value;
+        const country = document.getElementById("country").value;
+        const phone = document.getElementById("phone").value;
+        const password = document.getElementById("regPassword").value;
+
+        try {
+            await setDoc(doc(db, "users", phone), {
+                fullName: name,
+                email: email,
+                gender: gender,
+                country: country,
+                phone: phone,
+                password: password 
+            });
+            await setDoc(doc(db, "bankAccounts", phone), {
+  accountName: name,
+  phone: phone,
+  balance: 0,
+  status: "INACTIVE",
+  linkedNumber: phone,
+  transactions: "Nil",
+  information: "Welcome to Virtual Bank.",
+  informationLink: ""
+});
+
+            // Reset input fields so they're completely clean for next use
+            document.getElementById("regForm").reset();
+
+            document.getElementById('registerBox').classList.add('hidden');
+            document.getElementById('successBox').classList.remove('hidden');
+            document.getElementById("success").innerHTML = `Dear ${name},<br><br>You have Successfully registered your CHITCHAT account.`;
+            
+        } catch (error) {
+            alert("Error creating account: " + error.message);
+        }
+    });
+
+    // --- LOGIN LOGIC ---
+    document.getElementById("loginForm").addEventListener("submit", async function(e){
+        e.preventDefault();
+        
+        const loginPhone = document.getElementById("loginPhone").value;
+        const passwordInput = document.getElementById("password").value;
+        const errorField = document.getElementById("error");
+        
+        errorField.textContent = "";
+
+        try {
+            const userDocRef = doc(db, "users", loginPhone);
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+
+                if (userData.password === passwordInput) {
+                    localStorage.setItem("loggedInUser", loginPhone);
+window.location.href = "dashboard.html";
+                } else {
+                    errorField.textContent = "Wrong Password!";
+                }
+            } else {
+                errorField.textContent = "Phone number not registered!";
+            }
+            
+        } catch (error) {
+            errorField.textContent = "Login error: " + error.message;
+        }
+    });
+</script>
+
+</body>
+</html>
