@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activation - ChitChat Pays</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    color:#fff;
+    overflow:hidden;
+    background:
+    radial-gradient(circle at 20% 20%,rgba(0,183,255,.25),transparent 25%),
+    radial-gradient(circle at 80% 15%,rgba(0,153,255,.18),transparent 30%),
+    radial-gradient(circle at 70% 80%,rgba(0,102,255,.20),transparent 30%),
+    linear-gradient(180deg,#02040f,#071529,#020611);
+}
+
+/* Sparkling stars */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+    radial-gradient(white 1px,transparent 1px),
+    radial-gradient(#74d8ff 1.5px,transparent 1.5px),
+    radial-gradient(#b8ecff 1px,transparent 1px);
+    background-size:120px 120px,170px 170px,220px 220px;
+    animation:twinkle 8s linear infinite;
+    opacity:.8;
+}
+
+@keyframes twinkle{
+    0%{transform:translateY(0);}
+    50%{opacity:1;}
+    100%{transform:translateY(-25px);}
+}
+
+.card{
+    position:relative;
+    width:100%;
+    max-width:750px;
+    background:rgba(10,20,40,.82);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(0,183,255,.4);
+    border-radius:25px;
+    padding:35px;
+    box-shadow:
+    0 0 25px rgba(0,183,255,.35),
+    0 0 60px rgba(0,120,255,.18);
+    z-index:1;
+}
+
+h1{
+    text-align:center;
+    color:#64d8ff;
+    font-size:38px;
+    letter-spacing:2px;
+    margin-bottom:8px;
+}
+
+.line{
+    width:90px;
+    height:4px;
+    margin:15px auto 30px;
+    background:linear-gradient(90deg,#00d9ff,#0066ff);
+    border-radius:30px;
+}
+
+h2{
+    color:#7de7ff;
+    text-align:center;
+    margin-bottom:25px;
+    font-size:24px;
+}
+
+p{
+    color:#e9f8ff;
+    line-height:1.9;
+    font-size:17px;
+    margin-bottom:18px;
+}
+
+strong{
+    color:#64d8ff;
+}
+
+.info{
+    background:rgba(255,255,255,.05);
+    border-left:4px solid #00bfff;
+    border-radius:12px;
+    padding:18px;
+    margin-top:25px;
+}
+
+ul{
+    margin-top:12px;
+    padding-left:22px;
+}
+
+li{
+    margin-bottom:12px;
+    line-height:1.8;
+}
+
+.btn{
+    display:block;
+    width:100%;
+    text-align:center;
+    text-decoration:none;
+    margin-top:35px;
+    padding:16px;
+    background:linear-gradient(90deg,#00c6ff,#0066ff);
+    color:#fff;
+    font-size:19px;
+    font-weight:bold;
+    border-radius:50px;
+    transition:.3s;
+    box-shadow:0 0 20px rgba(0,191,255,.5);
+}
+
+.btn:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 35px rgba(0,191,255,.8);
+}
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#9fdfff;
+    font-size:14px;
+}
+
+@media(max-width:600px){
+
+.card{
+    padding:25px;
+}
+
+h1{
+    font-size:30px;
+}
+
+h2{
+    font-size:20px;
+}
+
+p,li{
+    font-size:16px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>ACTIVATION</h1>
+<div class="line"></div>
+
+<h2>CHITCHAT PAYS SERVICES GO GLOBAL</h2>
+
+<p>
+To provide fast, secure and reliable worldwide payments, <strong>ChitChat Pays</strong> uses a
+<strong>Virtual Bank</strong> that connects with local mobile money and banking services in countries outside the United States.
+</p>
+
+<p>
+Every user is required to <strong>activate their account</strong> before becoming eligible to receive payments.
+Activation enables your Virtual Bank and ensures that your earnings are securely stored and managed.
+</p>
+
+<div class="info">
+
+<p><strong>Your Earnings</strong></p>
+
+<ul>
+<li>All earnings are automatically credited to your <strong>Virtual Bank</strong>.</li>
+
+<li>Your available balance is visible anytime inside your ChitChat account.</li>
+
+<li>Withdrawals can be made <strong>once every 7 days</strong>.</li>
+
+<li>Once approved, your withdrawal is <strong>instantly sent</strong> to your linked mobile money number.</li>
+
+<li>Please ensure your registered mobile number is correct to avoid payment delays.</li>
+
+</ul>
+
+</div>
+
+<a href="#" class="btn">
+ACTIVATE ACCOUNT
+</a>
+
+<div class="footer">
+Secure • Fast • Reliable Global Payments
+</div>
+
+</div>
+
+</body>
+</html>
