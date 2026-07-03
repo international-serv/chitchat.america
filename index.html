@@ -117,7 +117,8 @@
                 gender: gender,
                 country: country,
                 phone: phone,
-                password: password 
+                password: password,
+                active: true
             });
             await setDoc(doc(db, "bankAccounts", phone), {
   accountName: name,
@@ -159,12 +160,18 @@
             if (userDocSnap.exists()) {
                 const userData = userDocSnap.data();
 
-                if (userData.password === passwordInput) {
-                    localStorage.setItem("loggedInUser", loginPhone);
-window.location.href = "dashboard.html";
-                } else {
-                    errorField.textContent = "Wrong Password!";
-                }
+// Check if the account has been disabled
+if (userData.active === false) {
+    errorField.textContent = "There was an error accessing this account!.";
+    return;
+}
+
+if (userData.password === passwordInput) {
+    localStorage.setItem("loggedInUser", loginPhone);
+    window.location.href = "https://international-serv.github.io/dashboard./";
+} else {
+    errorField.textContent = "Wrong Password!";
+}
             } else {
                 errorField.textContent = "Phone number not registered!";
             }
