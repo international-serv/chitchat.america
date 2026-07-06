@@ -111,15 +111,28 @@
         const password = document.getElementById("regPassword").value;
 
         try {
-            await setDoc(doc(db, "users", phone), {
-                fullName: name,
-                email: email,
-                gender: gender,
-                country: country,
-                phone: phone,
-                password: password,
-                active: true
-            });
+        
+               await setDoc(doc(db, "users", phone), {
+    fullName: name,
+    email: email,
+    gender: gender,
+    country: country,
+    phone: phone,
+    password: password,
+    active: true,
+
+    profilePic: "",
+
+    followersCount: 0,
+    followingCount: 0,
+
+    likes: {},
+    follows: {},
+    friends: {},
+
+    likedProfiles: [],
+    followedProfiles: []
+});
             await setDoc(doc(db, "bankAccounts", phone), {
   accountName: name,
   phone: phone,
