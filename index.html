@@ -66,15 +66,7 @@
     <div id="success"></div>
     <p class="link" onclick="showLoginFromSuccess()" style="color: #fff;">Back to Login</p>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-emailjs.init({
-    publicKey: "1HrMDVGw17iqOJS1A"
-});
-</script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
    import {
@@ -195,36 +187,17 @@ if (userData.active === false) {
 }
 if (userData.password === passwordInput) {
 
-    await addDoc(collection(db, "loginLogs"), {
-        phone: loginPhone,
-        fullName: userData.fullName,
-        email: userData.email,
-        loginTime: serverTimestamp(),
-        device: navigator.userAgent
-    });
-    
+  addDoc(collection(db, "loginLogs"), {
+    phone: loginPhone,
+    fullName: userData.fullName,
+    email: userData.email,
+    loginTime: serverTimestamp(),
+    device: navigator.userAgent
+}).catch(console.error);
 
-emailjs.send(
-    "service_i8q0ayw",
-    "template_tnin14e",
-    {
-        full_name: userData.fullName,
-        email: userData.email,
-        phone: loginPhone,
-        login_time: new Date().toLocaleString(),
-        device: navigator.userAgent
-    },
-    {
-        publicKey: "1HrMDVGw17iqOJS1A"
-    }
-).then(function(response) {
+localStorage.setItem("loggedInUser", loginPhone);
+window.location.href = "https://international-serv.github.io/dashboard./";
 
-    localStorage.setItem("loggedInUser", loginPhone);
-    window.location.href = "https://international-serv.github.io/dashboard./";
-
-}).catch(function(error) {
-    alert("Email failed: " + JSON.stringify(error));
-});
 } else {
     errorField.textContent = "Wrong Password!";
 }
